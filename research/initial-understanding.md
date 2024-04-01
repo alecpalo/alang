@@ -36,3 +36,8 @@ x
 +
 1
 }
+
+The lexer does NOT give meaning to anything, it breaks it down into important bits, and typically removes whitespace
+
+### Lexing with Ocaml (Ocamllex)
+

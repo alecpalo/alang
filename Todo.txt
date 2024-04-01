@@ -1,5 +1,11 @@
-Todo:
-1. Design language features
-  - Make a detailed list of how the language should work, including syntax data types, structures
+Updated Todo:
+1. Start with the most basic parts of my language
+  a) arthimatic + variable declaration!
+2. Write the Lexer (.mll file with ocamllex)
+3. Define my abstract syntax tree
+4. Write my Parser
+  a) decide whether to use ocamlyacc or menhir (also figure out what the difference is)
+  b) figure out what exactly / how a parser works
+5. Test each component
+6. THEN ADD MORE FEATURES!!!!!
 
-2. Research Lexers
