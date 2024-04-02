@@ -1,2 +1,5 @@
 (library
- (name alang))
+ (name alang)
+ (menhir
+  (modules parser))
+   (ocamllex lexer))
