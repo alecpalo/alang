@@ -1,6 +1,9 @@
 (library
  (name alang)
- (libraries menhirLib)
- (preprocess (pps menhir))
- (modules lexer parser))
+ (libraries menhirLib))
 
+(ocamllex
+ (modules lexer))
+
+(menhir
+ (modules parser))

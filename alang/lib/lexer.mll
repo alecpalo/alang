@@ -1,34 +1,31 @@
+(* lexer.mll *)
 {
-  open Parser
+    open Parser
+    let next_line lexbuf =
+        let pos = lexbuf.Lexing.lex_curr_p in
+        lexbuf.Lexing.lex_curr_p <- { pos with
+            Lexing.pos_lnum = pos.Lexing.pos_lnum + 1;
+            Lexing.pos_bol = pos.Lexing.pos_cnum;
+        }
+    exception Error of string
 }
 
-(* Dfine helper regexes *)
 let digit = ['0'-'9']
-let alpha = ['a'-'z' 'A'-'Z']
-let frac = '.' digit*
-let ex = ['e' 'E'] ['-' '+']? digit+
-let float = digit* frac? exp?
-let int = '-'? digit+
-let id = (alpha) (alpha|digit|'_')*
+let letter = ['a'-'z' 'A'-'Z']
+let identifier = letter (letter | digit | '_')*
 let whitespace = [' ' '\t']+
 let newline = '\r' | '\n' | "\r\n"
 
-rule read_token =
-  parse
-  | whitespace { read lexbuf }
-  | newline {next_line lexbuf; read lexbuf}
-  | int {INT (int_of_string (Lexing.lexeme lexbuf))}
-  | float    { FLOAT (float_of_string (Lexing.lexeme lexbuf)) }
-  | "true"   { TRUE }
-  | "false"  { FALSE }
-  | "null"   { NULL }
-  | '"'      { read_string (Buffer.create 17) lexbuf }
-  | '{'      { LEFT_BRACE }
-  | '}'      { RIGHT_BRACE }
-  | '['      { LEFT_BRACK }
-  | ']'      { RIGHT_BRACK }
-  | ':'      { COLON }
-  | ','      { COMMA }
-  | _ { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
-  | eof      { EOF }
-
+rule token = parse
+  | whitespace { token lexbuf }
+  | newline { next_line lexbuf; token lexbuf}
+  | digit+ as int_lit { INT(int_of_string int_lit) }
+  | '+' { PLUS }
+  | '-' { MINUS }
+  | '*' { TIMES }
+  | '/' { DIVIDE }
+  | '(' { LPAREN }
+  | ')' { RPAREN }
+  | identifier as id { VAR(id) }
+  | eof { EOF }
+  | _ as char { raise (Error (Printf.sprintf "Unexpected character: '%c'" char)) }
