@@ -24,7 +24,7 @@ rule token =
     parse
     | whitespace { token lexbuf }
     | newline { next_line lexbuf; token lexbuf}
-    | digit+ as int_lit { INT(int_of_string int_lit) }
+    | int as int_lit { INT(int_of_string int_lit) }
     | singleLineComment { read_single_line_comment lexbuf }
     | multiLineCommentStart { read_multi_line_comment lexbuf }
     | '+' { PLUS }

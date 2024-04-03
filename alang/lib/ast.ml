@@ -1,6 +1,8 @@
 (* ast.ml *)
 type operator = Add | Sub | Mul | Div
 
+type loc = Lexing.position
+
 type expr =
   | Int of int                  (* Integer literals *)
   | Var of string               (* Variables *)
